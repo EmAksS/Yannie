@@ -1,0 +1,102 @@
+@use "__animations" as *;
+@use "__fonts" as *;
+@use "__text" as *;
+@use "__variables" as *;
+@use "__mixins" as *;
+@use "__reset" as *;
+
+html,
+body{
+    height: 100%;
+    overflow: hidden;
+}
+
+body{
+    @include flexbox();
+    color: $black;
+    font-family: 'Inter', sans-serif;
+}
+
+#root,
+.App,
+.content{
+    @include flexbox();
+    flex-grow: 1;
+}
+
+.content{
+    @include padding(24, 24, 24, 24);
+}
+
+.flex{
+    @include flexbox();
+
+    &--space{
+        justify-content: space-between;
+    }
+}
+
+main{
+    flex-grow: 1;
+}
+
+.button{
+    @include flexbox();
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 1;
+
+    @include padding(16, 8, 16, 8);
+    @include MinWidth(240);
+
+    @include borderRadius(64);
+
+    @include fontSize(18);
+
+    transition: background-color 0.35s $bezier--base,
+                color 0.35s $bezier--base,
+                border-color 0.35s $bezier--base,
+                transform 0.35s $bezier--base,
+                box-shadow 0.35s $bezier--base;
+
+
+    &--to-ocean{
+        color: $pacific-blue;
+        border: adaptive(1) solid $pacific-blue;
+        
+        &:hover{
+            background-color: $pacific-blue;
+            color: $white;
+        }
+    }
+
+    &--to-white{
+        color: $white;
+        border: adaptive(1) solid $white;
+
+        &:hover{
+            background-color: $white;
+            color: $pacific-blue;
+            box-shadow: 
+                0 adaptive(10) adaptive(25) rgba(0, 0, 0, 0.2),
+                0 0 adaptive(15) rgba(255, 255, 255, 0.3);
+        }
+
+        &:active{
+            box-shadow: 0 adaptive(2) adaptive(5) rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.1s ease;
+        }
+    }
+
+    &--from-ocean{
+        color: $white;
+        background: $pacific-blue;
+        border: adaptive(1) solid $pacific-blue;
+
+        &:hover{
+            color: $pacific-blue;
+            background: $white;
+        }
+    }
+}

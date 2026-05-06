@@ -1,0 +1,24 @@
+@use "../../../../../../styles/_mixins" as *;
+@use "../../../../../../styles/_variables" as *;
+
+.tooltip--warning{
+    &__content{
+        border: adaptive(1) solid $pacific-blue;
+    }
+
+    &__text{
+        position: relative;
+        @include fontSize(12);
+        color: $pacific-blue;
+
+        &::before{
+            content: "* ";
+            position: absolute;
+            @include left(-8);
+        }
+    }
+
+    &__arrow{
+        fill: $pacific-blue;
+    }
+}

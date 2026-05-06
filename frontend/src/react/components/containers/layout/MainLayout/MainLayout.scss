@@ -1,0 +1,13 @@
+@use '../../../../../styles/_mixins' as *;
+@use '../../../../../styles/_variables' as *;
+
+.main{
+    @include flexbox();
+    flex-direction: column;
+    flex-grow: 1;
+
+    &Layout{
+        @include flexbox();
+        flex-grow: 1;
+    }
+}

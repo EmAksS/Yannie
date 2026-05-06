@@ -1,0 +1,44 @@
+@use "../../../../../styles/_mixins"  as *;
+@use "../../../../../styles/_variables"  as *;
+
+.header{
+    @include flexbox();
+
+    background: $platinum;
+    width: 100%;
+
+    border-bottom: adaptive(1) solid $platinum--border;
+
+    .content{
+        align-items: center;
+    }
+
+    &__end{
+        @include flexbox();
+        @include gap(24);
+    }
+
+    &__logo{
+        
+        @include fontSize(48);
+        font-family: Raleway, sans-serif;
+
+        font-weight: 700;
+
+        p{
+            color: $pacific-blue;
+        }
+    }
+}
+
+.sign{
+    @include padding(12, 18, 12, 18);
+    @include MinWidth(108);
+
+    @include borderRadius(12);
+
+
+    &-in{
+        background: $white;
+    }
+}

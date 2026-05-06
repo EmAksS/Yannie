@@ -1,0 +1,75 @@
+@use '../../../../../styles/_mixins' as *;
+@use '../../../../../styles/_variables' as *;
+
+.auth-input{
+    @include flexbox();
+    @include gap(24);
+    @include padding(24, 32, 24, 32);
+
+    @include fontSize(16);
+
+    position: relative;
+
+    background-color: $platinum;
+
+    transition: background-color 0.15s $bezier--base,
+                color 0.15s $bezier--base;
+
+    &.error{
+        background-color: color-mix(in srgb, $pacific-blue 15%, transparent);
+        color: $pacific-blue;
+    }
+
+    &__icon{
+        @include height(32);
+        @include width(32);
+
+        > *{
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    > input{
+        flex-grow: 1;
+    }
+
+    &__alert{
+        position: absolute;
+        left: adaptive(-48);
+
+        @include height(32);
+        @include width(32);
+
+        > *{
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.password--eye{
+    @include height(32);
+    @include width(32);
+
+    path{
+        transition: fill 0.35s $bezier--base;
+    }
+
+    &:hover{
+        path{
+            fill: $gray;
+        }
+    }
+
+    &.active{
+        path{
+            fill: $pacific-blue;
+        }
+    }
+
+    > *{
+        height: 100%;
+        width: 100%;
+    }
+}

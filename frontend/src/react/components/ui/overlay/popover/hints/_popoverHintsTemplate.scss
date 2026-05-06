@@ -1,0 +1,24 @@
+@use "../../../../../../styles/_mixins" as *;
+@use "../../../../../../styles/_variables" as *;
+
+.popover{
+    &__content{
+        @include gap(4);
+        flex-direction: column;
+    }
+
+    &--hint{
+        &__title{
+
+            text-decoration: underline;
+            font-weight: 600;
+
+            &::first-letter{
+                text-transform: uppercase;
+            }
+            
+        }
+
+
+    }
+}

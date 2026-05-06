@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "lib": ["DOM", "ESNext"],
+    "types": ["react", "react-dom"],
+    "moduleResolution": "Node"
+  },
+  "include": ["./src/**/*"]
+}

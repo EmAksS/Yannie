@@ -1,0 +1,22 @@
+@use "../../../../../styles/_mixins" as *;
+@use "../../../../../styles/_variables" as *;
+
+.tooltip{
+
+    > *{
+        height: 100%;
+        width: 100%;
+    }
+
+    &__content{
+        @include padding(4, 16, 4, 16);
+        background-color: $platinum;
+
+        @include borderRadius(8);
+    }
+
+    &__arrow{
+        @include height(12);
+        @include width(12);
+    }
+}
