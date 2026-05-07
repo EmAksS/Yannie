@@ -5,7 +5,6 @@ pub mod handlers;
 mod dto;
 
 use std::sync::Arc;
-use migration::{Migrator, MigratorTrait};
 use axum::{routing::post, Router};
 use infrastructure::{db::init_db, SeaOrmUserRepository};
 use security::argon_hasher::ArgonHasher;
@@ -17,8 +16,16 @@ use utoipa_swagger_ui::SwaggerUi;
 // Собираем документацию Swagger
 #[derive(OpenApi)]
 #[openapi(
-    paths(handlers::auth_handler::register_handler),
-    components(schemas(dto::auth::RegisterRequest))
+    paths(
+        handlers::auth_handler::register_handler,
+        handlers::auth_handler::login_handler),
+    components(
+        schemas(
+            dto::auth::RegisterRequest,
+            dto::auth::LoginRequest,
+            dto::auth::TokenResponse
+        ), 
+    )
 )]
 struct ApiDoc;
 
@@ -33,17 +40,7 @@ async fn main() {
         .await
         .expect("Не удалось подключиться к базе данных");
 
-   
     let jwt_secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be set");
-
-    // 3. ЗАПУСК МИГРАЦИЙ (Автоматическое создание таблиц)
-    // Этот код проверит папку migration и создаст таблицу users, если её нет.
-    println!("Running migrations...");
-    Migrator::up(&db_conn, None)
-        .await
-        .expect("Не удалось запустить миграции");
-    println!("✅ Migrations completed!");
-
 
     // 3. Сборка слоев (Dependency Injection)
     let user_repo = Arc::new(SeaOrmUserRepository::new(db_conn));
@@ -56,6 +53,7 @@ async fn main() {
     // 4. Настройка веб-сервера
     let app = Router::new()
         .route("/api/auth/register", post(handlers::auth_handler::register_handler))
+        .route("/api/auth/login", post(handlers::auth_handler::login_handler))
         // Добавляем Swagger UI
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
         // Передаем AuthService в состояние Axum

@@ -3,7 +3,7 @@ use domain::commands::RegisterCommand;
 use domain::user::User;
 use crate::ports::user_repository::UserRepository;
 use crate::ports::password_hasher::PasswordHasher;
-use crate::ports::token_service::TokenService; // 1. Импортируем новый порт
+use crate::ports::token_service::TokenService; 
 
 pub struct AuthService {
     repo: Arc<dyn UserRepository>,
@@ -15,13 +15,13 @@ impl AuthService {
     pub fn new(
         repo: Arc<dyn UserRepository>, 
         hasher: Arc<dyn PasswordHasher>,
-        token_service: Arc<dyn TokenService>, // 3. Обновляем конструктор
+        token_service: Arc<dyn TokenService>,
     ) -> Self {
         Self { repo, hasher, token_service }
     }
 
     // Сценарий регистрации (остается почти таким же)
-    pub async fn register(&self, command: RegisterCommand) -> Result<(), String> {
+    pub async fn register(&self, command: RegisterCommand) -> Result<String, String> {
 
         let new_user = match command {
             RegisterCommand::Email { email, raw_password, public_name } => {
@@ -36,8 +36,13 @@ impl AuthService {
             },
         };
 
+        let user_id = new_user.id;
 
-        self.repo.save(new_user).await
+        self.repo.save(new_user).await?;
+
+        let token = self.token_service.create_token(user_id)?;
+
+        Ok(token)
     }
 
     // Сценарий входа (теперь возвращает ТОКЕН)
@@ -47,7 +52,7 @@ impl AuthService {
             .ok_or("Пользователь не найден")?;
 
         let stored_hash = user.password_hash.as_ref()
-                .ok_or("Для этого аккаунта не установлен пароль. Войдите через кошелек")?;
+            .ok_or("Для этого аккаунта не установлен пароль. Войдите через кошелек")?;
 
         // 2. Проверяем пароль
         if !self.hasher.verify(&raw_pass, stored_hash) {
